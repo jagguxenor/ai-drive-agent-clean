@@ -32,16 +32,15 @@ public class SecurityConfig {
 
             // 🔹 OAuth Login + Redirect to React
             .oauth2Login(oauth -> oauth
-                .successHandler((request, response, authentication) -> {
-                    response.sendRedirect("http://localhost:5173/folders");
-                })
-            )
+            	    .successHandler((request, response, authentication) -> {
+            	        response.sendRedirect("https://your-frontend.vercel.app/folders");
+            	    })
+            	)
 
-            // 🔹 Optional logout
-            .logout(logout -> logout
-                .logoutSuccessUrl("http://localhost:5173")
-                .permitAll()
-            );
+            	.logout(logout -> logout
+            	    .logoutSuccessUrl("https://your-frontend.vercel.app")
+            	    .permitAll()
+            	);
 
         return http.build();
     }
