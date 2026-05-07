@@ -31,13 +31,13 @@ public class SecurityConfig {
             // Google OAuth Login
             .oauth2Login(oauth -> oauth
                 .successHandler((request, response, authentication) -> {
-                    response.sendRedirect("https://ai-drive-frontend.vercel.app");
+                    response.sendRedirect("https://ai-drive-frontend.vercel.app/folders");
                 })
             )
-        
+
             // Logout
             .logout(logout -> logout
-                .logoutSuccessUrl("https://ai-drive-frontend.vercel.app/folders")
+                .logoutSuccessUrl("https://ai-drive-frontend.vercel.app")
                 .permitAll()
             );
 
