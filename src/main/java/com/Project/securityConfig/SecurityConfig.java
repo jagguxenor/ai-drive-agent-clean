@@ -15,14 +15,10 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-
-            // ENABLE CORS
-            .cors(cors -> {})
-
-            // Disable CSRF
+            // Disable CSRF for frontend API calls
             .csrf(csrf -> csrf.disable())
 
-            // Authorization
+            // Authorization rules
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
                         "/",
@@ -30,46 +26,32 @@ public class SecurityConfig {
                         "/oauth2/**",
                         "/login**"
                 ).permitAll()
-
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-
                 .anyRequest().authenticated()
             )
 
-            // OAuth Login
+            // Google OAuth Login
             .oauth2Login(oauth -> oauth
                 .successHandler((request, response, authentication) -> {
-
-                    response.sendRedirect(
-                        "https://ai-drive-frontend.vercel.app/folders"
-                    );
+                    response.sendRedirect("https://ai-drive-frontend.vercel.app/folders");
                 })
             )
 
             // Logout
             .logout(logout -> logout
-                .logoutSuccessUrl(
-                    "https://ai-drive-frontend.vercel.app"
-                )
+                .logoutSuccessUrl("https://ai-drive-frontend.vercel.app")
                 .permitAll()
             );
 
         return http.build();
     }
-
-    // CORS CONFIG
     @Bean
     public WebMvcConfigurer corsConfigurer() {
-
         return new WebMvcConfigurer() {
-
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-
                 registry.addMapping("/**")
-                        .allowedOrigins(
-                            "https://ai-drive-frontend.vercel.app"
-                        )
+                        .allowedOrigins("https://ai-drive-frontend.vercel.app")
                         .allowedMethods("*")
                         .allowedHeaders("*")
                         .allowCredentials(true);
